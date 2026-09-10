@@ -20,7 +20,7 @@
 
 ### روش اول: اجرای تک‌خطی در پاورشل (PowerShell)
 ```powershell
-irm https://raw.githubusercontent.com/T4wroot/antigravity-persian-fix/main/install.ps1 | iex
+irm https://raw.githubusercontent.com/dalroot/antigravity-persian-fix/main/install.ps1 | iex
 ```
 
 ### روش دوم: فعال‌سازی مستقیم به عنوان اسکیل (Antigravity Skill)
