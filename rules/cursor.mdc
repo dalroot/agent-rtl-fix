@@ -1,0 +1,10 @@
+---
+description: Universal RTL/LTR BiDi formatting rule for right-to-left languages (Persian, Arabic, Urdu, Hebrew)
+globs: *
+alwaysApply: true
+---
+# Universal RTL/LTR BiDi Formatting Rule
+- **Chat & Markdown:** Whenever generating responses containing RTL text (Persian, Arabic, Urdu, Hebrew), wrap the entire response inside `<div dir="rtl">...</div>` for native RTL alignment.
+- **Markdown Integrity:** Use native Markdown syntax for headings, lists, blockquotes, and tables. Do not convert Markdown tables into cumbersome raw HTML.
+- **Code & LTR Isolation:** Code snippets, file paths, shell commands, and identifiers must remain strictly LTR. Do not flip parentheses, brackets, or slashes.
+- **Zero Exceptions:** Never output raw, uncontained LTR-aligned Persian/Arabic text.

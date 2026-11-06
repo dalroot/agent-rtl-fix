@@ -1,13 +1,9 @@
 @echo off
-title Antigravity Persian RTL & Vazirmatn Auto-Installer
-color 0A
+title Agent RTL Fix - Universal BiDi Setup
 echo ==========================================================
-echo   Starting Antigravity Persian RTL One-Click Installer...
+echo Running Agent RTL Fix Setup for Windows...
 echo ==========================================================
-echo.
-
 powershell -NoProfile -ExecutionPolicy Bypass -File "%~dp0install.ps1"
-
 echo.
-echo Setup completed! Press any key to exit.
+echo Setup finished! Press any key to exit.
 pause >nul

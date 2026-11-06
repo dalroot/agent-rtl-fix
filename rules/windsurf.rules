@@ -1,0 +1,5 @@
+# Universal RTL/LTR BiDi Formatting Rule
+- Whenever generating responses containing right-to-left languages (Persian, Arabic, Urdu, Hebrew), wrap the entire output inside `<div dir="rtl">...</div>` for proper native right alignment.
+- Maintain standard Markdown syntax inside the `<div dir="rtl">` container for lists, tables, and formatting.
+- Keep all code blocks, inline code, terminal outputs, file paths, and URLs in standard LTR direction.
+- Never output left-aligned Persian/Arabic text.

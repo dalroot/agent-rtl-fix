@@ -1,0 +1,29 @@
+name: Release Build & Asset Packaging
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+permissions:
+  contents: write
+
+jobs:
+  build-release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Create Distribution Archive
+        run: |
+          mkdir -p dist
+          zip -r dist/agent-rtl-fix-${{ github.ref_name }}.zip . -x "*.git*" "dist/*"
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: dist/*.zip
+          generate_release_notes: true
+          draft: false
+          prerelease: false
