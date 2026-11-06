@@ -1,23 +1,21 @@
 #!/usr/bin/env bash
 # ==============================================================================
 # Agent RTL Fix - Universal Linux & macOS Installer (v2.0.0)
+# Supports: One-liner remote execution and local offline execution
 # ==============================================================================
 
 set -e
 
-SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-if [ -d "$SCRIPT_DIR/fonts" ]; then
-    FONTS_DIR="$SCRIPT_DIR/fonts"
-else
-    FONTS_DIR="$(dirname "$SCRIPT_DIR")/fonts"
-fi
+REPO_OWNER="dalroot"
+REPO_NAME="agent-rtl-fix"
+BRANCH="main"
 
 echo "=========================================================="
 echo "  Agent RTL Fix (v2.0.0) - Universal BiDi Setup Engine   "
 echo "=========================================================="
 
 # 1. Install Fonts
-echo "[1/3] Installing Core Vazirmatn Fonts..."
+echo "[1/4] Installing Core Vazirmatn Typography..."
 if [ "$(uname)" == "Darwin" ]; then
     FONT_DEST="$HOME/Library/Fonts"
 else
@@ -26,18 +24,36 @@ fi
 
 mkdir -p "$FONT_DEST"
 
-if [ -d "$FONTS_DIR" ]; then
-    cp -f "$FONTS_DIR"/*/*.ttf "$FONT_DEST/" 2>/dev/null || cp -f "$FONTS_DIR"/*.ttf "$FONT_DEST/" 2>/dev/null || true
-    if command -v fc-cache >/dev/null 2>&1; then
-        fc-cache -f "$FONT_DEST" >/dev/null 2>&1 || true
-    fi
-    echo "  [OK] Installed fonts to $FONT_DEST"
-else
-    echo "  [!] Local fonts directory not found, skipping font install."
+CORE_FONTS=(
+    "Vazirmatn-Regular.ttf"
+    "Vazirmatn-Medium.ttf"
+    "Vazirmatn-SemiBold.ttf"
+    "Vazirmatn-Bold.ttf"
+)
+
+SCRIPT_DIR=""
+if [ -n "${BASH_SOURCE[0]}" ] && [ -f "${BASH_SOURCE[0]}" ]; then
+    SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 fi
 
-# 2. Configure Global Antigravity Agent Rule
-echo "[2/3] Setting Up Universal AI Agent Rules..."
+for font in "${CORE_FONTS[@]}"; do
+    if [ -n "$SCRIPT_DIR" ] && [ -f "$SCRIPT_DIR/fonts/Vazirmatn/$font" ]; then
+        cp -f "$SCRIPT_DIR/fonts/Vazirmatn/$font" "$FONT_DEST/"
+    elif [ -n "$SCRIPT_DIR" ] && [ -f "$SCRIPT_DIR/../fonts/Vazirmatn/$font" ]; then
+        cp -f "$SCRIPT_DIR/../fonts/Vazirmatn/$font" "$FONT_DEST/"
+    else
+        font_url="https://raw.githubusercontent.com/$REPO_OWNER/$REPO_NAME/$BRANCH/fonts/Vazirmatn/$font"
+        curl -fsSL "$font_url" -o "$FONT_DEST/$font" 2>/dev/null || true
+    fi
+done
+
+if command -v fc-cache >/dev/null 2>&1; then
+    fc-cache -f "$FONT_DEST" >/dev/null 2>&1 || true
+fi
+echo "  [OK] Installed Vazirmatn fonts to $FONT_DEST"
+
+# 2. Configure Global Antigravity Machine Rule
+echo "[2/4] Setting Up Global Antigravity AI Rules..."
 RULES_DIR="$HOME/.gemini/config/rules"
 mkdir -p "$RULES_DIR"
 
@@ -53,10 +69,56 @@ description: Universal RTL/LTR BiDi formatting rule for right-to-left languages 
 - **Zero Exceptions:** Never produce uncontained or left-aligned RTL text in chat or artifacts.
 EOF
 
-echo "  [OK] Installed global agent rule: $RULES_DIR/rtl-formatting.md"
+echo "  [OK] Global Antigravity rule installed at: $RULES_DIR/rtl-formatting.md"
 
-# 3. Update VS Code / Antigravity settings if present
-echo "[3/3] Checking IDE configuration..."
+# 3. Configure Local Project Rules (Cursor, Windsurf, Copilot, Claude, Cline)
+echo "[3/4] Checking Current Project Directory..."
+CWD="$(pwd)"
+if [ -d "$CWD/.git" ] || [ -f "$CWD/package.json" ] || [ -f "$CWD/go.mod" ] || [ -f "$CWD/Cargo.toml" ] || [ -f "$CWD/pyproject.toml" ]; then
+    echo "  -> Project workspace detected at $CWD"
+    
+    # Universal AGENTS.md
+    if [ ! -f "$CWD/AGENTS.md" ]; then
+        cat << 'EOF' > "$CWD/AGENTS.md"
+# Universal AI Agent RTL/LTR BiDi Formatting Standard
+
+Whenever responding or generating documentation in right-to-left (RTL) languages (Persian, Arabic, Urdu, Hebrew):
+1. **Outer RTL Boundary**: Wrap the complete response or markdown file inside `<div dir="rtl">...</div>`.
+2. **Markdown Preservation**: Retain standard GitHub Flavored Markdown (GFM) inside the container. Do NOT convert Markdown tables to verbose raw HTML.
+3. **BiDi Code & Log Isolation**: All code blocks (```lang ... ```), inline code (`code`), terminal logs, shell commands, URLs, and file paths must remain strictly LTR.
+4. **Zero Exceptions**: Never emit uncontained or left-aligned RTL text.
+EOF
+        echo "  [OK] Added AGENTS.md to current project"
+    fi
+
+    # Cursor
+    if [ -d "$CWD/.cursor" ]; then
+        mkdir -p "$CWD/.cursor/rules"
+        cat << 'EOF' > "$CWD/.cursor/rules/bidi.mdc"
+---
+description: Universal RTL/LTR BiDi formatting rule
+globs: *
+alwaysApply: true
+---
+Wrap all responses containing RTL languages (Persian, Arabic, Urdu, Hebrew) in `<div dir="rtl">...</div>`. Keep code and terminal blocks strictly LTR.
+EOF
+        echo "  [OK] Added .cursor/rules/bidi.mdc"
+    fi
+
+    # GitHub Copilot
+    if [ -d "$CWD/.github" ]; then
+        cat << 'EOF' > "$CWD/.github/copilot-instructions.md"
+# GitHub Copilot RTL/LTR BiDi Formatting Instructions
+Wrap all RTL language responses (Persian, Arabic, Urdu, Hebrew) inside `<div dir="rtl">...</div>`. Keep all code snippets, paths, and commands in standard LTR.
+EOF
+        echo "  [OK] Added .github/copilot-instructions.md"
+    fi
+else
+    echo "  (No project root in current folder; global machine configs applied)"
+fi
+
+# 4. Update VS Code / Antigravity / Cursor settings if present
+echo "[4/4] Updating Editor Settings (Font & BiDi Highlighting)..."
 CONFIG_DIRS=(
     "$HOME/.config/Antigravity/User"
     "$HOME/.config/Code/User"
@@ -72,7 +134,6 @@ for cdir in "${CONFIG_DIRS[@]}"; do
         if [ ! -f "$sfile" ]; then
             echo "{}" > "$sfile"
         fi
-        # Non-destructive check with python or jq if available
         if command -v python3 >/dev/null 2>&1; then
             python3 -c "
 import json

@@ -20,12 +20,12 @@
 ### 🇮🇷 معرفی به زبان فارسی
 **Agent RTL Fix** یک استاندارد مدرن و سبک برای حل ریشه‌ای مشکلات راست‌چین‌سازی (RTL) و چندجهته (BiDi) در پاسخ‌های تمامی ایجنت‌های هوش مصنوعی کدنویسی مانند **Google Antigravity**، **Cursor**، **Windsurf**، **GitHub Copilot**، **Claude Code** و **Cline** است.
 
-#### چرا نسخه جدید (v2.0.0) متفاوت است؟
-* ⚡ **حداقل مصرف توکن (Zero Token Overhead):** برخلاف روش‌های قدیمی که صدها کاراکتر اینلاین‌استایل سنگین به هر پیام تحمیل می‌کردند، این ابزار با یک تگ بومی ساختار را مرتب می‌کند.
-* 🛡️ **حفظ ساختار مارک‌داون:** جداول، لیست‌ها و علائم نگارشی خراب نمی‌شوند و به کدهای HTML طویل تبدیل نمی‌گردند.
-* 💻 **ایزوله‌سازی دقیق LTR:** تمامی بلاک‌های کد، لاگ‌ها، مسیر فایل‌ها و دستورات ترمینال به صورت چپ‌چین دقیق حفظ می‌شوند تا پرانتزها و اسلش‌ها برعکس نشوند.
-* 🔤 **فونت فوق‌العاده سبک وزیرمتن (Vazirmatn):** فقط وزن‌های پایه و ضروری برای ادیتور با کاهش ۹۶٪ حجم مخزن.
-* 🌐 **پشتیبانی Cross-Platform:** نصب خودکار روی لینوکس، مک و ویندوز.
+#### ⚡ چرا نسخه جدید (v2.0.0) متفاوت است؟
+* **حداقل مصرف توکن (Zero Token Overhead):** برخلاف روش‌های قدیمی که صدها کاراکتر اینلاین‌استایل سنگین به هر پیام تحمیل می‌کردند، این ابزار با یک تگ بومی ساختار را مرتب می‌کند.
+* **حفظ ساختار مارک‌داون:** جداول، لیست‌ها و علائم نگارشی خراب نمی‌شوند و به کدهای طویل HTML تبدیل نمی‌گردند.
+* **ایزوله‌سازی دقیق LTR:** تمامی بلاک‌های کد، لاگ‌ها، مسیر فایل‌ها و دستورات ترمینال به صورت چپ‌چین دقیق حفظ می‌شوند تا پرانتزها و اسلش‌ها برعکس نشوند.
+* **فونت فوق‌العاده سبک وزیرمتن (Vazirmatn):** فقط ۴ وزن اصلی و ضروری برای ادیتور با کاهش ۹۶٪ حجم مخزن.
+* **پشتیبانی Cross-Platform:** نصب خودکار روی ویندوز، لینوکس و مک.
 
 </div>
 
@@ -40,7 +40,32 @@
 
 ---
 
-## 🚀 Quick Install (1-Liner)
+## 💬 1-Prompt In-Chat Activation (No Terminal Needed)
+
+You can activate this directly in your AI assistant's chat (Antigravity, Cursor, Windsurf, Claude Code, Copilot) without touching a terminal. Just copy and paste either prompt:
+
+### English Prompt:
+```text
+Please read the universal BiDi formatting standard from:
+https://raw.githubusercontent.com/dalroot/agent-rtl-fix/main/rules/AGENTS.md
+and save it as an always-on rule in this workspace/environment.
+```
+
+<div dir="rtl">
+
+### پرامپت فارسی (کپی مستقیم در چت با هوش مصنوعی):
+```text
+لطفاً استاندارد راست‌چین‌سازی و فرمت‌بندی دوطرفه (BiDi/RTL) را از نشانی زیر بخوان و به عنوان قانون دائم (Always-on Rule) در این محیط/پروژه اعمال کن:
+https://raw.githubusercontent.com/dalroot/agent-rtl-fix/main/rules/AGENTS.md
+```
+
+</div>
+
+---
+
+## 🚀 Quick Install via Terminal (1-Liner)
+
+Running the installer script automatically installs Vazirmatn fonts, enables BiDi highlighting in your editor settings, and registers the global machine-wide rule for Antigravity (and project rules if run inside a repo):
 
 ### Windows (PowerShell)
 ```powershell
@@ -52,7 +77,7 @@ irm https://raw.githubusercontent.com/dalroot/agent-rtl-fix/main/install.ps1 | i
 curl -fsSL https://raw.githubusercontent.com/dalroot/agent-rtl-fix/main/install.sh | bash
 ```
 
-### Manual / Offline
+### Offline / 1-Click
 1. Download the latest `agent-rtl-fix-v2.0.0.zip` from [Releases](https://github.com/dalroot/agent-rtl-fix/releases).
 2. Extract and run `install.bat` (Windows) or `bash install.sh` (Linux/macOS).
 
