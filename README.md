@@ -128,6 +128,11 @@ agent-rtl-fix/
 
 ---
 
+## 🔍 Search Keywords & Indexing Topics
+`ai-agent-rtl` • `cursor-rules-rtl` • `antigravity-persian` • `vazirmatn-vscode` • `bidi-markdown` • `copilot-rtl` • `windsurf-rules` • `claude-code-persian` • `persian-arabic-urdu-hebrew` • `inverted-parentheses-fix` • `bidirectional-text-formatting`
+
+---
+
 ## 📜 License
 
 This project is licensed under the **MIT License**. Free for open-source and commercial use.
