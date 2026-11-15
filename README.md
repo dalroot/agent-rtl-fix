@@ -7,9 +7,9 @@
 </p>
 
 <p align="center">
-  <a href="https://github.com/dalroot/agent-rtl-fix/releases"><img src="https://img.shields.io/badge/release-v2.0.0-blue.svg?style=flat-square" alt="Release v2.0.0"></a>
+  <a href="https://github.com/dalroot/agent-rtl-fix/releases"><img src="https://img.shields.io/badge/release-v2.1.0-blue.svg?style=flat-square" alt="Release v2.1.0"></a>
   <img src="https://img.shields.io/badge/platform-Windows%20%7C%20Linux%20%7C%20macOS-informational.svg?style=flat-square" alt="Platforms">
-  <img src="https://img.shields.io/badge/agents-Antigravity%20%7C%20Cursor%20%7C%20Windsurf%20%7C%20Copilot%20%7C%20Claude-success.svg?style=flat-square" alt="Supported Agents">
+  <img src="https://img.shields.io/badge/agents-Antigravity%20%7C%20Cursor%20%7C%20Windsurf%20%7C%20Zed%20%7C%20Aider%20%7C%20Copilot%20%7C%20Claude-success.svg?style=flat-square" alt="Supported Agents">
   <a href="LICENSE"><img src="https://img.shields.io/badge/license-MIT-green.svg?style=flat-square" alt="License MIT"></a>
 </p>
 
@@ -21,7 +21,7 @@
 
 ## ⚡ The Problem
 
-When AI coding assistants (like Google Antigravity, Cursor, Windsurf, Copilot, or Claude Code) generate responses in right-to-left (RTL) languages like **Persian, Arabic, Urdu, or Hebrew**, severe text-rendering bugs occur:
+When AI coding assistants (like Google Antigravity, Cursor, Windsurf, Zed, Aider, Copilot, or Claude Code) generate responses in right-to-left (RTL) languages like **Persian, Arabic, Urdu, or Hebrew**, severe text-rendering bugs occur:
 
 1. **Inverted Punctuation & Brackets**: Parentheses `()`, brackets `[]`, and quotation marks get inverted and jump across lines.
 2. **Reversed Paths & URLs**: File paths (`/var/log/...` or `C:\Users\...`) and URLs get scrambled backward.
@@ -34,7 +34,7 @@ When AI coding assistants (like Google Antigravity, Cursor, Windsurf, Copilot, o
 
 ## 💬 1-Prompt In-Chat Activation (No Terminal Needed)
 
-You don't need to open a terminal to enable this. Simply copy and paste this single prompt directly into your AI agent's chat window (in Antigravity, Cursor, Windsurf, Claude Code, or Copilot):
+You don't need to open a terminal to enable this. Simply copy and paste this single prompt directly into your AI agent's chat window (in Antigravity, Cursor, Windsurf, Zed, Claude Code, or Copilot):
 
 ```text
 Please read the universal BiDi formatting standard from:
@@ -46,7 +46,7 @@ and save it as an always-on rule in this workspace/environment.
 
 ## 🚀 Quick Install via Terminal (1-Liner)
 
-Running the installer script automatically installs core Vazirmatn fonts, enables BiDi highlighting in your editor settings, and registers the global machine-wide rule:
+Running the installer script automatically installs core Vazirmatn fonts (with instant Windows/Linux cache activation without needing a reboot), enables BiDi highlighting in your editor settings, and registers the global machine-wide rule and skill:
 
 ### Windows (PowerShell)
 ```powershell
@@ -58,8 +58,24 @@ irm https://raw.githubusercontent.com/dalroot/agent-rtl-fix/main/install.ps1 | i
 curl -fsSL https://raw.githubusercontent.com/dalroot/agent-rtl-fix/main/install.sh | bash
 ```
 
+### Advanced CLI Flags
+
+Both installers support optional command-line switches:
+
+| PowerShell Switch | Bash Flag | Description |
+| :--- | :--- | :--- |
+| `-GlobalOnly` | `--global-only` | Apply only machine-wide rules, skills, fonts, and IDE settings (skip current project workspace) |
+| `-ProjectOnly` | `--project-only` | Add `AGENTS.md` and workspace rules to current folder only (skip system-wide changes) |
+| `-NoFonts` | `--no-fonts` | Skip font installation (useful in headless servers, CI/CD, or Docker containers) |
+| `-Silent` | `--silent` | Run quietly without banners or non-essential logs |
+
+*Example:*
+```powershell
+.\install.ps1 -ProjectOnly
+```
+
 ### Offline / 1-Click
-1. Download `agent-rtl-fix-v2.0.0.zip` from the [Latest Release](https://github.com/dalroot/agent-rtl-fix/releases/latest).
+1. Download `agent-rtl-fix-v2.1.0.zip` from the [Latest Release](https://github.com/dalroot/agent-rtl-fix/releases/latest).
 2. Extract the archive and run `install.bat` (Windows) or `bash install.sh` (Linux/macOS).
 
 ---
@@ -68,9 +84,11 @@ curl -fsSL https://raw.githubusercontent.com/dalroot/agent-rtl-fix/main/install.
 
 | AI Coding Agent | Configuration Location | Rule File in this Repo | Setup Action |
 | :--- | :--- | :--- | :--- |
-| **Google Antigravity** | `~/.gemini/config/rules/` | [`rules/antigravity.md`](rules/antigravity.md) | Installed automatically system-wide (`trigger: always_on`) |
+| **Google Antigravity** | `~/.gemini/config/rules/` & `skills/` | [`rules/antigravity.md`](rules/antigravity.md) | Installed automatically system-wide (`trigger: always_on`) |
 | **Cursor IDE** | `.cursor/rules/` or project root | [`rules/cursor.mdc`](rules/cursor.mdc) | Copy to `.cursor/rules/bidi.mdc` or `.cursorrules` |
 | **Windsurf (Codeium)** | Project root | [`rules/windsurf.rules`](rules/windsurf.rules) | Copy to `.windsurfrules` |
+| **Zed Editor** | `.zed/settings.json` or project root | [`rules/zed.md`](rules/zed.md) | Configure font in Zed settings & place `AGENTS.md` |
+| **Aider CLI** | `.aider.conf.yml` or project root | [`rules/aider.md`](rules/aider.md) | Append system prompt to `.aider.conf.yml` or place `AGENTS.md` |
 | **GitHub Copilot** | `.github/` | [`rules/copilot-instructions.md`](rules/copilot-instructions.md) | Copy to `.github/copilot-instructions.md` |
 | **Claude Code** | Project root | [`rules/claude.md`](rules/claude.md) | Append to `CLAUDE.md` |
 | **Cline / Roo Code** | Project root | [`rules/cline.md`](rules/cline.md) | Copy to `.clinerules` |
@@ -86,8 +104,9 @@ The standard universal instruction enforced across all agents:
 - Whenever responding in RTL languages (Persian, Arabic, Urdu, Hebrew):
   1. Wrap the complete response inside <div dir="rtl">...</div>.
   2. Keep standard Markdown syntax for headings, bullet points, and tables.
-  3. Keep all code blocks, logs, terminal outputs, and file paths strictly LTR.
-  4. Never produce uncontained or left-aligned RTL text.
+  3. Keep all code blocks, logs, terminal outputs, file paths, and LaTeX math strictly LTR.
+  4. Ensure surrounding punctuation around inline code does not flip.
+  5. Never produce uncontained or left-aligned RTL text.
 ```
 
 ---
@@ -98,15 +117,21 @@ The standard universal instruction enforced across all agents:
 agent-rtl-fix/
 ├── .github/
 │   └── workflows/
+│       ├── ci.yml               # Automated CI test matrix (PS5.1, PS7, Ubuntu, macOS)
 │       └── release.yml          # Automated release and zip packager
 ├── rules/                       # Modular rules for every agent
 │   ├── antigravity.md           # Antigravity always_on global rule
 │   ├── cursor.mdc               # Cursor IDE rule
 │   ├── windsurf.rules           # Windsurf rules
+│   ├── zed.md                   # Zed Editor configuration & rules
+│   ├── aider.md                 # Aider AI coding assistant prompt
 │   ├── copilot-instructions.md  # GitHub Copilot instructions
 │   ├── claude.md                # Claude Code instructions
 │   ├── cline.md                 # Cline / Roo Code rules
 │   └── AGENTS.md                # Universal AI Agent specification
+├── skills/                      # Antigravity AI custom skills
+│   └── agent-rtl-fix/
+│       └── SKILL.md             # Machine-wide agent skill
 ├── fonts/                       # Core Vazirmatn typography (~500 KB)
 │   └── Vazirmatn/
 │       ├── Vazirmatn-Regular.ttf
@@ -114,10 +139,10 @@ agent-rtl-fix/
 │       ├── Vazirmatn-SemiBold.ttf
 │       └── Vazirmatn-Bold.ttf
 ├── scripts/
-│   ├── install.ps1              # Modular Windows installer
-│   ├── install.sh               # Modular Linux/macOS installer
-│   ├── uninstall.ps1            # Windows cleanup script
-│   └── uninstall.sh             # Linux/macOS cleanup script
+│   ├── install.ps1              # Modular Windows installer with flags & PS5.1 fix
+│   ├── install.sh               # Modular Linux/macOS installer with flags
+│   ├── uninstall.ps1            # Windows cleanup script (-Full support)
+│   └── uninstall.sh             # Linux/macOS cleanup script (--full support)
 ├── install.bat                  # 1-Click Windows launcher
 ├── install.ps1                  # Root PowerShell installer
 ├── install.sh                   # Root Bash installer
@@ -129,7 +154,7 @@ agent-rtl-fix/
 ---
 
 ## 🔍 Search Keywords & Indexing Topics
-`ai-agent-rtl` • `cursor-rules-rtl` • `antigravity-persian` • `vazirmatn-vscode` • `bidi-markdown` • `copilot-rtl` • `windsurf-rules` • `claude-code-persian` • `persian-arabic-urdu-hebrew` • `inverted-parentheses-fix` • `bidirectional-text-formatting`
+`ai-agent-rtl` • `cursor-rules-rtl` • `antigravity-persian` • `vazirmatn-vscode` • `bidi-markdown` • `copilot-rtl` • `windsurf-rules` • `zed-editor-rtl` • `aider-rtl` • `claude-code-persian` • `persian-arabic-urdu-hebrew` • `inverted-parentheses-fix` • `bidirectional-text-formatting`
 
 ---
 
