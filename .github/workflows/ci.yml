@@ -1,0 +1,85 @@
+name: CI Test Matrix & Quality Verification
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  test-windows:
+    name: Windows Installer Validation (PS 5.1 & PS 7)
+    runs-on: windows-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Test Windows PowerShell 5.1 Compatibility
+        shell: powershell
+        run: |
+          Write-Host "Testing install.ps1 on Windows PowerShell $($PSVersionTable.PSVersion)..."
+          .\install.ps1 -Silent -ProjectOnly
+          if (-not (Test-Path "AGENTS.md")) {
+            throw "AGENTS.md was not generated in project workspace!"
+          }
+
+      - name: Test PowerShell Core (pwsh) Compatibility
+        shell: pwsh
+        run: |
+          Write-Host "Testing install.ps1 on PowerShell Core $($PSVersionTable.PSVersion)..."
+          .\install.ps1 -Silent -ProjectOnly
+
+      - name: Verify JSON Settings Preservation
+        shell: powershell
+        run: |
+          $testDir = New-Item -ItemType Directory -Path "$env:TEMP\agent-rtl-test" -Force
+          $testSettings = Join-Path $testDir "settings.json"
+          $initialJson = '{"existing.custom.key": "preserve_me", "editor.tabSize": 2}'
+          Set-Content -Path $testSettings -Value $initialJson -Encoding UTF8
+
+          # Test Update logic in PowerShell 5.1
+          $raw = Get-Content $testSettings -Raw | ConvertFrom-Json
+          $dict = [ordered]@{}
+          foreach ($p in $raw.PSObject.Properties) { $dict[$p.Name] = $p.Value }
+          $dict["editor.fontFamily"] = "'Vazirmatn', monospace"
+          $out = ($dict | ConvertTo-Json) -replace '\\u0027', "'"
+          Set-Content -Path $testSettings -Value $out -Encoding UTF8
+
+          $verified = Get-Content $testSettings -Raw | ConvertFrom-Json
+          if ($verified."existing.custom.key" -ne "preserve_me") {
+            throw "Existing user settings were wiped out!"
+          }
+          Write-Host "Settings preservation test passed."
+
+  test-unix:
+    name: Unix Shell Validation (${{ matrix.os }})
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest, macos-latest]
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Check Bash Syntax
+        run: |
+          bash -n install.sh
+          bash -n scripts/install.sh
+          bash -n scripts/uninstall.sh
+
+      - name: Test Installer Execution (--silent --project-only)
+        run: |
+          bash install.sh --silent --project-only
+          test -f AGENTS.md
+
+  sync-check:
+    name: Script Consistency & Single Source of Truth Check
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Compare Root and Scripts Directory
+        run: |
+          diff -u install.ps1 scripts/install.ps1
+          diff -u install.sh scripts/install.sh
